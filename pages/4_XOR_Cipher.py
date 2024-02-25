@@ -15,7 +15,7 @@ def xor_encrypt(plaintext, key):
         key_byte =  key[i % len(key)]
         encrypted_byte = input_text_byte ^ key_byte
         ciphertext.append(encrypted_byte)
-        st.write(f"plaintext byte: {format(input_text_byte, '08b')} = {chr(input_text_byte)}")
+        st.write(f"Plaintext Byte: {format(input_text_byte, '08b')} = {chr(input_text_byte)}")
         st.write(f"Key byte:       {format(key_byte, '08b')} = {chr(key_byte)}")
         st.write(f"XOR result:     {format(encrypted_byte, '08b')} = {chr(encrypted_byte)}")
         
