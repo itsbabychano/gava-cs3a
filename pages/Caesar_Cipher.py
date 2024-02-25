@@ -54,6 +54,5 @@ if st.button("Submit"):
         st.write("Cipher:", encrypted_text)
         st.write("Decrypted text:", decrypted_text)
 
-    st.balloons()
-    st.snow()
+
     
