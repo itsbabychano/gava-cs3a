@@ -1,7 +1,6 @@
 import streamlit as st
 
 def prime(n):
-    """Checks if a number is prime."""
     if n <= 1:
         return False
     if n <= 3:
@@ -17,7 +16,6 @@ def prime(n):
 
 
 def check_primitive(g, p):
-    """Finds primitive roots of a prime number."""
     primitive_roots = []
     for i in range(1, p):
         temp = set()
@@ -33,11 +31,11 @@ def check_primitive(g, p):
         if len(temp) == p - 1:
             primitive_roots.append(i)
             output += f" ==> {i} is primitive root of {p}, "
-        st.write(output)  # Display output in Streamlit
+        st.write(output)  
     return g in primitive_roots, primitive_roots
 
 
-# Streamlit app
+
 st.title("Primitive Root Checker")
 
 q = st.number_input("Enter a number (q):", min_value=2)
