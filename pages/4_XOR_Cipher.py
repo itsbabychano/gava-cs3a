@@ -2,10 +2,36 @@ import streamlit as st
 
 st.header("XOR Cipher")
 
-plaintext = bytes(st.text_area("Plain Text:").encode())
+# Layout and Explanatory text
+col1, col2 = st.columns(2)
 
-key = bytes(st.text_input("Key:").encode())
+with col1:
+    st.markdown("**Encryption**")
+    plaintext = bytes(st.text_area("Plain Text:", help="Enter the text you want to encrypt").encode())
+    key = bytes(st.text_input("Key:", help="Enter a key for the cipher").encode())
 
+with col2:
+    st.markdown("**Decryption**")
+    ciphertext = bytes(st.text_area("Ciphertext:", help="Enter the ciphertext to decrypt").encode())
+    key2 = bytes(st.text_input("Key (same as for encryption):").encode())  # Renamed from 'key'
+
+# Button and Output
+if st.button("Submit"):
+    if plaintext.decode() == key.decode():
+        st.error("Plaintext should not be equal to the key")
+    elif len(key.decode()) > len(plaintext.decode()):
+        st.error("Plaintext length should be equal or greater than the length of key")
+    else:
+        if plaintext and key and not ciphertext:  # Assuming encryption 
+            st.markdown("**Encryption Results**")
+            encrypted_text = xor_encrypt(plaintext, key)
+            st.write("Ciphertext:", encrypted_text.decode())
+        elif ciphertext and key2 and not plaintext:  # Assuming decryption
+            st.markdown("**Decryption Results**")
+            decrypted_text = xor_decrypt(ciphertext, key2)
+            st.write("Decrypted:", decrypted_text.decode())
+
+# Your xor_encrypt and xor_decrypt definitions (Place these below) 
 def xor_encrypt(plaintext, key):
     """Encrypts plaintext using XOR cipher with the given key, st.writeing bits involved."""
 
@@ -22,23 +48,7 @@ def xor_encrypt(plaintext, key):
         st.write("--------------------")
     return ciphertext
 
-
 def xor_decrypt(ciphertext, key):
     """Decrypts ciphertext using XOR cipher with the given key."""
     return xor_encrypt(ciphertext, key)   # XOR decryption is the same as encryption
-
-
-
-if st.button("Submit"):
-    if plaintext.decode() == key.decode():
-        print("plaintext should not be equal to the key")
-    
-    elif len(key.decode()) > len(plaintext.decode()):
-        print("plaintext length should be equal or greater than the length of key")
-    else:
-        encrypted_text = xor_encrypt(plaintext, key)
-        print("Ciphertext:", encrypted_text.decode())
-        decrypted_text = xor_decrypt(encrypted_text, key)
-        print("Decrypted:", plaintext.decode())
-        st.write(plaintext)
 
