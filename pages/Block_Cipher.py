@@ -29,7 +29,7 @@ def xor_encrypt(plaintext, key, block_size):
     for x, i in enumerate(range(0, len(padded_plaintext), block_size)):
         plaintext_block = padded_plaintext[i:i+block_size]
         encrypted_block = xor_encrypt_block(plaintext_block, key)
-        print(f"Plain  block[{x}]: {plaintext_block.hex()} : {plaintext_block}")
+        print(f"Plain  block[{x}]: {plaintext_block.hex()} : {plaintext_block}")
         print(f"Cipher block[{x}]: {encrypted_block.hex()} : {encrypted_block}")
         encrypted_data += encrypted_block
     return encrypted_data 
@@ -48,21 +48,32 @@ def xor_decrypt(ciphertext, key, block_size):
 # Streamlit App
 st.title("XOR Encryption/Decryption") 
 
-plaintext = st.text_input("Enter plaintext:")
-key = st.text_input("Enter key:")
-block_size = st.number_input("Enter block size (8, 16, 32, 64, 128):", min_value=8, max_value=128, value=16, step=8)
+plaintext = st.text_input("Plaintext:", value="If the plaintext to be encrypted is not an exact multiple, you need to pad before encrypting by adding a padding string.")
+key = st.text_input("key:", value="password_mo!")
+block_size = st.number_input("Block size:", min_value=8, max_value=128, value=32, step=8)
 
 if st.button("Encrypt"):
     if block_size in [8, 16, 32, 64, 128]:
         key = pad(key.encode(), block_size)
         ciphertext = xor_encrypt(plaintext.encode(), key, block_size)
-        st.write("**Encrypted Data (Hexadecimal):**")
-        st.code(ciphertext.hex()) 
+
+        st.write("**Encrypted blocks**")
+        for x, i in enumerate(range(0, len(ciphertext), block_size)):
+            block = ciphertext[i:i+block_size]
+            st.write(f"Plain  block[{x}]: {block[:block_size//2].hex()} : {block[:block_size//2]}")
+            st.write(f"Cipher block[{x}]: {block.hex()} : {block}")
 
         decrypted_data = xor_decrypt(ciphertext, key, block_size)
-        st.write("**Decrypted Data (Hexadecimal):**")
-        st.code(decrypted_data.hex())
-        st.write("**Decrypted Data:**") 
-        st.write(decrypted_data)
+
+        st.write("\n**Decrypted blocks**")
+        for x, i in enumerate(range(0, len(decrypted_data), block_size)):
+            block = decrypted_data[i:i+block_size]
+            st.write(f"block[{x}]: {block.hex()}: {block}")
+
+        st.write("\n**Original plaintext:**", decrypted_data)
+        st.write("**Key byte      :**", key)
+        st.write("**Key hex       :**", key.hex())
+        st.write("**Encrypted data:**", ciphertext.hex())  
+        st.write("**Decrypted data:**", decrypted_data.hex()) 
     else:
         st.error("Block size must be one of 8, 16, 32, 64, or 128 bytes")
