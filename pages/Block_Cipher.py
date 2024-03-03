@@ -46,7 +46,7 @@ def xor_decrypt(ciphertext, key, block_size):
     return unpadded_decrypted_data  
 
 # Streamlit App
-st.title("XOR Encryption/Decryption") 
+st.title("Block Cipher - XOR") 
 
 plaintext = st.text_input("Plaintext:", value="If the plaintext to be encrypted is not an exact multiple, you need to pad before encrypting by adding a padding string.")
 key = st.text_input("key:", value="password_mo!")
